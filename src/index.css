@@ -213,6 +213,9 @@
     font-size: 40px;
     width: 45%;
   }
+  .gridDate2{
+    padding: 0;
+  }
 
 @media (max-width:460px){
   .eventspage{
@@ -293,4 +296,12 @@
     height: auto;
     z-index: 60;
   }
+  .eventdatas{
+    font-size: 6px;
+    padding: 0;
+    width: 100%;
+    border-radius: 2px;
+    padding: 1px;
+  }
+  
 }

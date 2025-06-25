@@ -11,7 +11,7 @@ const EventCard = ({ event }) => {
   );
 
   return (
-    <div className={`text-xs p-1 rounded ${event.color || "bg-gray-200"}`}>
+    <div className={`text-xs p-1 rounded ${event.color || "bg-gray-200"} eventdatas`}>
       <strong>{event.title}</strong><br />
       {event.start} → {end.format("HH:mm")}
     </div>

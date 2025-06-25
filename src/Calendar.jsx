@@ -182,7 +182,7 @@ const Calendar = () => {
               className={`border-t-4 border-black-300 p-2 text-left h-50 overflow-y-auto scrollbar-hidden gridDate2 ${isToday ? 'bg-blue-200 border-blue-500' : ''} ${day.day() === 0 ? 'text-red-500' : ''}`}
             >
               <div className="text-2xl font-bold datefont">{day.date()}</div>
-              <div className="mt-1 space-y-1 ">
+              <div className="mt-1 space-y-1">
                 {dayEvents.map(event => (
                   <EventCard key={event.id} event={event} />
                 ))}
