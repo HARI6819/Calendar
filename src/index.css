@@ -18,11 +18,10 @@
 }
 
 .eventspage{
-    height: 100vh;
+    height: auto;
     width: 33%;
     float: right;
     margin-left: 50px;
-    background-color: red;
 }
 
 .scrollbar-hidden::-webkit-scrollbar {
@@ -30,10 +29,10 @@
 }
 
 .eventfont{
-    position: fixed;
+    position: relative;
     background-color: rgb(4, 23, 62);
     height: 89.9vh;
-    width: 18.3%;
+    width: 100%;
     overflow-y: auto;
     padding-bottom: 20px;
 }
@@ -183,4 +182,115 @@
 .formBox{
   height: 70%;
   overflow-y: auto;
+}
+.togglebtn{
+  display: none;
+}
+.toggellabel{
+  display: none;
+}
+.dateBox{
+  overflow: hidden;
+}
+.gridouter{
+  height: 85%;
+  overflow-y: auto;
+}
+.formBox input{
+    background-color: rgb(249, 223, 223);
+    border-left: 3px solid black;
+  }
+
+  .labelcolor{
+    font-size: 13px;
+  }
+
+  .colorbtn{
+    margin-left: 3px;
+  }
+
+  .dateHead{
+    font-size: 40px;
+    width: 45%;
+  }
+
+@media (max-width:460px){
+  .eventspage{
+    width: 0;
+    margin-left: 0;
+  }
+  .eventfont{
+    position: relative;
+    transform: translateX(10%);
+    font-size: 10px;
+    margin-bottom: 50px;
+  }
+  .eventsBorder{
+    border-bottom: 1px solid white;
+  }
+  .AddEventbtn{
+    font-size: 22px;
+  }
+  .eventtitle{
+    font-size: 13px;
+  }
+  .dateHead{
+    font-size: 20px;
+    width: 29.8%;
+  }
+  .adjust{
+    padding: 2px;
+    width: 35px;
+    font-size: 20px;
+  }
+  .Cstring{
+    margin-top: 10px;
+    top:1%;
+  }
+  .dateBox{
+    height: 73%;
+    padding-left: 10px;
+    overflow: hidden;
+    padding-right: 10px;
+  }
+  .gridDate{
+    font-size: 15px;
+  }
+  .gridDate2{
+    height: 80px;
+  }
+  .datefont{
+    font-size: 12px;
+  }
+  .gridouter{
+    height: 75.3%;
+    overflow-y: auto;
+  }
+  .moved {
+    transform: translateX(-94.3%);
+    color: white;
+  }
+  .toggellabel{
+    display: block;
+    position: relative;
+    z-index: 50;
+    left: 30%;
+    font-size: 26px;
+  }
+  .menuimg{
+    width: 20px;
+  }
+  .PopUpBox{
+    width: 90%;
+    margin-left: 5%;
+  }
+
+  .AddEventbtn{
+    font-size: 15px;
+  }
+  .formBox{
+    width: 100%;
+    height: auto;
+    z-index: 60;
+  }
 }

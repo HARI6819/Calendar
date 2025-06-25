@@ -3,6 +3,7 @@ import dayjs from "dayjs";
 import EventCard from "./EventCard";
 import './index.css';
 
+
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [events, setEvents] = useState([]);
@@ -12,7 +13,7 @@ const Calendar = () => {
   const [selectedDayLabel, setSelectedDayLabel] = useState("");
   const [selectedDay, setSelectedDay] = useState(null);
   const [conflictMessage, setConflictMessage] = useState("");
-
+  const [checked, setChecked] = useState(false);
   const [newEvent, setNewEvent] = useState({
     title: "",
     date: "",
@@ -20,6 +21,10 @@ const Calendar = () => {
     duration: "",
     color: "bg-yellow-200"
   });
+
+  const handleCheckboxChange = () => {
+    setChecked(!checked);
+  };
 
   useEffect(() => {
     fetch("/events.json")
@@ -134,7 +139,7 @@ const Calendar = () => {
       )}
 
       <div className="eventspage">
-        <div className="eventfont scrollbar-hidden">
+        <div className={` eventfont scrollbar-hidden ${checked ? "moved" : ""}`}>
           <h1 className="text-4xl font-bold text-red-400 mt-10 AddEventbtn">Events</h1>
           {events.filter(event => {
             const eventDate = dayjs(event.date);
@@ -142,7 +147,7 @@ const Calendar = () => {
           })
             .map(event => (
               <div key={event.id} className={`p-4 rounded text-red-200 mb-2 eventsBorder`}>
-                <h3 className="text-lg font-bold ">{event.title}</h3>
+                <h3 className="text-lg font-bold eventtitle">{event.title}</h3>
                 <p>Date: {event.date}</p>
                 <p>Start: {event.start}</p>
                 <p>Duration: {event.duration} hrs</p>
@@ -151,19 +156,21 @@ const Calendar = () => {
         </div>
       </div>
       <div className="flex items-center mb-6 mt-10">
-        <h2 className="text-4xl font-bold">{currentDate.format("MMMM YYYY")}</h2>
+        <h2 className="text-4xl font-bold dateHead">{currentDate.format("MMMM YYYY")}</h2>
         <button onClick={handlePrev} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">←</button>
         <button onClick={handleNext} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">→</button>
+        <label className="toggellabel">
+        <input type="checkbox" checked={checked} onChange={handleCheckboxChange} className={`mr-2 togglebtn `}/>< i class={`bx  bx-menu-select `} style={{color:checked ? "#ffffff" : undefined}} ></i></label>
       </div>
 
 
-      <div className="grid grid-cols-7 gap-2 text-center font-semibold">
+      <div className="grid grid-cols-7 gap-2 text-center font-semibold gridDate">
         {["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"].map(day => (
           <div key={day} className={day === "SUN" ? "text-red-500" : ""}>{day}</div>
         ))}
       </div>
 
-      <div className="grid grid-cols-7 gap-2 mt-3">
+      <div className="grid grid-cols-7 gap-2 mt-3 gridouter scrollbar-hidden">
         {generateCalendarDays().map(day => {
           const isToday = day.isSame(dayjs(), "day");
           const dayEvents = events.filter(e => dayjs(e.date).isSame(day, "day"));
@@ -172,10 +179,9 @@ const Calendar = () => {
             <div title="Click to See More"
               onClick={() => openEvent(day)}
               key={day.format("YYYY-MM-DD")}
-
-              className={`border-t-4 border-black-300 p-2 text-left h-50 overflow-y-auto scrollbar-hidden ${isToday ? 'bg-blue-200 border-blue-500' : ''} ${day.day() === 0 ? 'text-red-500' : ''}`}
+              className={`border-t-4 border-black-300 p-2 text-left h-50 overflow-y-auto scrollbar-hidden gridDate2 ${isToday ? 'bg-blue-200 border-blue-500' : ''} ${day.day() === 0 ? 'text-red-500' : ''}`}
             >
-              <div className="text-2xl font-bold">{day.date()}</div>
+              <div className="text-2xl font-bold datefont">{day.date()}</div>
               <div className="mt-1 space-y-1 ">
                 {dayEvents.map(event => (
                   <EventCard key={event.id} event={event} />
@@ -187,7 +193,7 @@ const Calendar = () => {
       </div>
 
       {showPopUp && (
-        <div className="fixed inset-0 popupEvents flex items-center justify-center z-50">
+        <div className="fixed inset-0 popupEvents flex items-center justify-center z-50 PopUpBox">
           <div className="bg-white p-6 rounded max-w-md w-full relative  popupDetails">
             <h2 className="text-xl font-bold mb-4 text-center">{selectedDayLabel}</h2>
             {selectedDayEvents.length > 0 ? (
@@ -214,16 +220,39 @@ const Calendar = () => {
             {showForm && (
               <form onSubmit={handleFormSubmit} className="p-4 bg-gray-100 rounded shadow-md max-w-md popup formBox scrollbar-hidden">
                 <input type="text" name="title" placeholder="Event Title" value={newEvent.title} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
-                <input type="date" name="date" value={newEvent.date} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
-                <input type="time" name="start" value={newEvent.start} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
+                <input type="date" name="date" value={newEvent.date} onChange={handleInputChange} className="block w-1/2 mr-2 p-2 mb-2 border rounded float-left" required />
+                <input type="time" name="start" value={newEvent.start} onChange={handleInputChange} className="block w-47/100 p-2 mb-2 border rounded" required />
                 <input type="text" name="duration" placeholder="Duration (HH:MM)" value={newEvent.duration} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
-                <select name="color" value={newEvent.color} onChange={handleInputChange} className="block w-full p-2 mb-4 rounded bg-gray-300 h-12">
-                  <option value="bg-blue-300">Blue</option>
-                  <option value="bg-green-300">Green</option>
-                  <option value="bg-yellow-200">Yellow</option>
-                  <option value="bg-red-400 text-gray-200">Red</option>
-                  <option value="bg-purple-200">Purple</option>
-                </select>
+                <label className="labelcolor">Choose the Color</label><br></br>
+
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {[
+                    "bg-yellow-200",
+                    "bg-green-400",
+                    "bg-red-400 text-gray-100",
+                    "bg-purple-300",
+                    "bg-blue-400",
+                    "bg-gray-400",
+                    "bg-orange-300",
+                    "bg-blue-200",
+                  ].map((color, index) => (
+                    <label key={index} className="inline-flex items-center cursor-pointer">
+                      <input
+                        type="radio"
+                        name="color"
+                        value={color}
+                        checked={newEvent.color === color}
+                        onChange={handleInputChange}
+                        className="hidden peer"
+                      />
+                      <span
+                        className={`px-4 py-4 rounded-full colorbtn ${color} peer-checked:border peer-checked:border-black`}
+                      ></span>
+                    </label>
+                  ))}
+                </div>
+
+
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Add to Calendar</button>
                 <button className="bg-red-500 p-2 rounded ml-5 pl-5 pr-5 text-white" onClick={cancelPopup}>Cancel</button>
               </form>
