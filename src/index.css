@@ -74,8 +74,21 @@
 
 .popupDetails{
     box-shadow: 0 0 1px black;
+    height: 60%;
+    max-height: 600px;
+    overflow-y: auto;
 }
 
+.PopupEventDetails{
+  height: 60%;
+  max-height: 600px;
+  /* padding-bottom: 60%; */
+  overflow-y: auto;
+}
+
+.closeBTN{
+  width: auto;
+}
 
 @keyframes slide-in {
   from {
@@ -152,4 +165,22 @@
   .eventfont{
     width: 210px;
   }
+}
+
+@media (max-height: 600px){
+  .closeBTN{
+    position: absolute;
+    top:10px;
+    left: 83%;
+    height: 10%;
+    min-height: 30px;
+    min-width: 40px;
+    width: 12%;
+    padding-top: 0.7%;
+  }
+}
+
+.formBox{
+  height: 70%;
+  overflow-y: auto;
 }
