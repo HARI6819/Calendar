@@ -34,7 +34,7 @@ ________________________________________
 🚦 How to Run
 
 1.	Clone the repository:
-git clone https://github.com/your-username/your-repo-name.git
+git clone https://github.com/HARI6819/Calendar.git
 cd your-repo-name
 2.	Install dependencies:
 npm install
