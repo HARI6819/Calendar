@@ -2,6 +2,8 @@
 
 A modern, responsive Event Calendar App built with React and Day.js that lets users view, add, and manage daily events with ease. 
 It features intuitive date navigation, conflict detection, and a color-coded UI for organizing and tracking events visually.
+
+Live Demo : https://calendar-24.netlify.app
 ________________________________________
 🚀 Features
 
