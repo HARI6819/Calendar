@@ -1,0 +1,155 @@
+@import "tailwindcss";
+
+
+.adjust{
+    margin-left: 10px;
+}
+
+.bor-color{
+    border: 2px solid rgba(0, 0, 0, 0.632);
+    box-shadow: 0 0 10px black;
+    padding-left: 50px;
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-right: 0;
+    height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+.eventspage{
+    height: 100vh;
+    width: 33%;
+    float: right;
+    margin-left: 50px;
+    background-color: red;
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+  display: none;
+}
+
+.eventfont{
+    position: fixed;
+    background-color: rgb(4, 23, 62);
+    height: 89.9vh;
+    width: 18.3%;
+    overflow-y: auto;
+    padding-bottom: 20px;
+}
+
+
+
+.popup{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    box-shadow: 0 0 200px black;
+}
+
+.popup input{
+    height: 50px;
+    border: none;
+    /* border-left: 4px solid; */
+    background-color: rgba(128, 128, 128, 0.292);
+}
+
+
+.eventsBorder{
+    border-bottom: 5px solid;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.AddEventbtn{
+    display: flex;
+    justify-self: center;
+}
+
+.popupEvents{
+    background-color: rgba(0, 0, 0, 0.068);
+}
+
+.popupDetails{
+    box-shadow: 0 0 1px black;
+}
+
+
+@keyframes slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.4s ease-out;
+}
+
+.bground{
+    background-color: black;
+    height: 100vh;
+    width: 100%;
+}
+
+
+.backimg {
+  background-image: url('https://img.freepik.com/premium-photo/free-vector-gradient-blur-red-pink-blue-abstract-background_696747-163.jpg');
+  background-color: rgba(255, 255, 255, 0.571); /* Add this line */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-blend-mode: lighten; /* or 'overlay', 'multiply', etc. */
+}
+
+.calenderString{
+    width:50%;
+    z-index: 10;
+}
+
+.calenderString2{
+    width: 50%;
+    z-index: 10;
+}
+
+.Cstring{
+    position: relative;
+    margin-top: -45px;
+    top: 3%;
+}
+
+
+
+.maincontainer{
+    
+    height: 100vh;
+}
+
+@media (max-width: 2001px) {
+  .eventfont{
+    width: 365px;
+  }
+}
+
+@media (max-width: 990px) {
+  .eventfont{
+    width: 300px;
+  }
+}
+
+@media (max-width: 890px) {
+  .eventfont{
+    width: 260px;
+  }
+}
+@media (max-width: 790px) {
+  .eventfont{
+    width: 210px;
+  }
+}
