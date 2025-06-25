@@ -1,12 +1,53 @@
-# React + Vite
+📅 React Event Calendar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern, responsive Event Calendar App built with React and Day.js that lets users view, add, and manage daily events with ease. 
+It features intuitive date navigation, conflict detection, and a color-coded UI for organizing and tracking events visually.
+________________________________________
+🚀 Features
 
-Currently, two official plugins are available:
+•	📆 Monthly Calendar View – Displays a grid-based calendar for the selected month and year.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+•	➕ Add Events – Users can add events with a title, date, start time, duration, and color.
 
-## Expanding the ESLint configuration
+•	❌ Conflict Detection – Prevents overlapping events on the same day.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+•	🎨 Color-coded Events – Visual categorization of events based on selected color.
+
+•	👁️ Event Details Popup – Click on any day to view, delete, or add new events.
+
+•	🗓️ Custom Month & Year Navigation – Navigate to previous/next months easily.
+
+•	✅ Responsive UI – Mobile-friendly and adaptable across screen sizes.
+
+________________________________________
+🛠️ Tech Stack
+
+•	React.js – Component-based UI library
+
+•	Day.js – Lightweight date manipulation
+
+•	CSS (Tailwind-inspired) – For responsive styling and custom layouts
+
+•	HTML5 & Modern JS
+
+________________________________________
+🚦 How to Run
+
+1.	Clone the repository:
+git clone https://github.com/your-username/your-repo-name.git
+cd your-repo-name
+2.	Install dependencies:
+npm install
+3.	Run the app:
+npm start
+4.	Visit: http://localhost:3000
+________________________________________
+📌 Notes
+
+•	Events are loaded from a local JSON file (events.json) in this version.
+
+•	Backend integration or persistent storage can be added easily.
+________________________________________
+🙌 Contributing
+Feel free to fork, improve, or submit pull requests! Any feedback is welcome 💬
+________________________________________
