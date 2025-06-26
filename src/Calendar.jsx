@@ -109,7 +109,7 @@ const Calendar = () => {
     setShowForm(false);
   };
 
-  const cancelPopup = () => {
+  const cancelPopUp = () => {
     setShowForm(false);
   };
 
@@ -239,7 +239,7 @@ const Calendar = () => {
 
 
                 <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">Add to Calendar</button>
-                <button className="bg-red-500 p-2 rounded ml-5 pl-5 pr-5 text-white" onClick={cancelPopup}>Cancel</button>
+                <button className="bg-red-500 p-2 rounded ml-5 pl-5 pr-5 text-white" onClick={cancelPopUp}>Cancel</button>
               </form>
 
             )}
