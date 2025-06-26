@@ -5,15 +5,15 @@ import './index.css';
 
 
 const Calendar = () => {
-  const [CDate, setCDate] = useState(dayjs());
-  const [EventsList, setEvents] = useState([]);
-  const [showForm, setShowForm] = useState(false);
-  const [showPopUp, setPopUp] = useState(false);
   const [SDayEvents, setSDayEvents] = useState([]);
   const [SDayLabel, setSDayLabel] = useState("");
   const [SDay, setSDay] = useState(null);
+  const [showForm, setShowForm] = useState(false);
+  const [CDate, setCDate] = useState(dayjs());
   const [PopUpMessage, setPopUpMessage] = useState("");
   const [checked, setChecked] = useState(false);
+  const [showPopUp, setPopUp] = useState(false);
+  const [EventsList, setEvents] = useState([]);
   const [newEventList, setNewEventList] = useState({
     title: "",
     date: "",
