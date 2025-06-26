@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
-import EventCard from "./EventCard";
+import Events from "./Events";
 import './index.css';
 
 
 const Calendar = () => {
-  const [currentDate, setCurrentDate] = useState(dayjs());
-  const [events, setEvents] = useState([]);
+  const [CDate, setCDate] = useState(dayjs());
+  const [EventsList, setEvents] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showPopUp, setPopUp] = useState(false);
-  const [selectedDayEvents, setSelectedDayEvents] = useState([]);
-  const [selectedDayLabel, setSelectedDayLabel] = useState("");
-  const [selectedDay, setSelectedDay] = useState(null);
-  const [conflictMessage, setConflictMessage] = useState("");
+  const [SDayEvents, setSDayEvents] = useState([]);
+  const [SDayLabel, setSDayLabel] = useState("");
+  const [SDay, setSDay] = useState(null);
+  const [PopUpMessage, setPopUpMessage] = useState("");
   const [checked, setChecked] = useState(false);
-  const [newEvent, setNewEvent] = useState({
+  const [newEventList, setNewEventList] = useState({
     title: "",
     date: "",
     start: "",
@@ -22,7 +22,7 @@ const Calendar = () => {
     color: "bg-yellow-200"
   });
 
-  const handleCheckboxChange = () => {
+  const CheckboxChange = () => {
     setChecked(!checked);
   };
 
@@ -30,28 +30,28 @@ const Calendar = () => {
     fetch("/events.json")
       .then(res => res.json())
       .then(data => setEvents(data))
-      .catch(err => console.error("Error loading events:", err));
+      .catch(err => console.error("Error loading events :", err));
   }, []);
 
-  const startOfMonth = currentDate.startOf("month").startOf("week");
-  const endOfMonth = currentDate.endOf("month").endOf("week");
+  const SOfMonth = CDate.startOf("month").startOf("week");
+  const EOfMonth = CDate.endOf("month").endOf("week");
 
-  const generateCalendarDays = () => {
+  const DaysList = () => {
     const days = [];
-    let day = startOfMonth;
-    while (day.isBefore(endOfMonth) || day.isSame(endOfMonth, 'day')) {
+    let day = SOfMonth;
+    while (day.isBefore(EOfMonth) || day.isSame(EOfMonth, 'day')) {
       days.push(day);
       day = day.add(1, "day");
     }
     return days;
   };
 
-  const handlePrev = () => setCurrentDate(currentDate.subtract(1, "month"));
-  const handleNext = () => setCurrentDate(currentDate.add(1, "month"));
+  const PrevMonthBtn = () => setCDate(CDate.subtract(1, "month"));
+  const NextMonthBtn = () => setCDate(CDate.add(1, "month"));
   const addEvents = () => {
-    setNewEvent({
+    setNewEventList({
       title: "",
-      date: selectedDay ? selectedDay.format("YYYY-MM-DD") : "",
+      date: SDay ? SDay.format("YYYY-MM-DD") : "",
       start: "",
       duration: "",
       color: "bg-yellow-200"
@@ -60,21 +60,21 @@ const Calendar = () => {
   };
 
   const openEvent = (day) => {
-    const filteredEvents = events.filter(e => dayjs(e.date).isSame(day, "day"));
-    setSelectedDay(day);
-    setSelectedDayEvents(filteredEvents);
-    setSelectedDayLabel(day.format("dddd, MMM D"));
+    const filteredEvents = EventsList.filter(e => dayjs(e.date).isSame(day, "day"));
+    setSDay(day);
+    setSDayEvents(filteredEvents);
+    setSDayLabel(day.format("dddd, MMM D"));
     setPopUp(true);
   };
 
-  const handleInputChange = (e) => {
+  const InputBox = (e) => {
     const { name, value } = e.target;
-    setNewEvent(prev => ({ ...prev, [name]: value }));
+    setNewEventList(prev => ({ ...prev, [name]: value }));
   };
 
-  const isOverlapping = (newEvent, existingEvent) => {
-    const newStart = dayjs(`${newEvent.date}T${newEvent.start}`);
-    const [h1, m1 = "0"] = newEvent.duration.split(":");
+  const isOverlapping = (newEventList, existingEvent) => {
+    const newStart = dayjs(`${newEventList.date}T${newEventList.start}`);
+    const [h1, m1 = "0"] = newEventList.duration.split(":");
     const newEnd = newStart.add(Number(h1), "hour").add(Number(m1), "minute");
 
     const existingStart = dayjs(`${existingEvent.date}T${existingEvent.start}`);
@@ -84,28 +84,28 @@ const Calendar = () => {
     return newStart.isBefore(existingEnd) && existingStart.isBefore(newEnd);
   };
 
-  const handleFormSubmit = (e) => {
+  const FormSubmit = (e) => {
     e.preventDefault();
 
-    const overlappingEvent = events.find(event =>
-      event.date === newEvent.date && isOverlapping(newEvent, event)
+    const overlappingEvent = EventsList.find(event =>
+      event.date === newEventList.date && isOverlapping(newEventList, event)
     );
 
     if (overlappingEvent) {
-      setConflictMessage(`Overlaps with "${overlappingEvent.title}" at ${overlappingEvent.start}`);
-      setTimeout(() => setConflictMessage(""), 4000);
+      setPopUpMessage(`Overlaps with "${overlappingEvent.title}" at ${overlappingEvent.start}`);
+      setTimeout(() => setPopUpMessage(""), 4000);
       return;
     }
 
-    const newId = events.length + 1;
-    const eventToAdd = { id: newId, ...newEvent };
-    setEvents([...events, eventToAdd]);
+    const newId = EventsList.length + 1;
+    const eventToAdd = { id: newId, ...newEventList };
+    setEvents([...EventsList, eventToAdd]);
 
-    if (selectedDay && dayjs(eventToAdd.date).isSame(selectedDay, 'day')) {
-      setSelectedDayEvents(prev => [...prev, eventToAdd]);
+    if (SDay && dayjs(eventToAdd.date).isSame(SDay, 'day')) {
+      setSDayEvents(prev => [...prev, eventToAdd]);
     }
 
-    setNewEvent({ title: "", date: "", start: "", duration: "", color: "bg-yellow-200" });
+    setNewEventList({ title: "", date: "", start: "", duration: "", color: "bg-yellow-200" });
     setShowForm(false);
   };
 
@@ -114,12 +114,12 @@ const Calendar = () => {
   };
 
   const removeEvent = (idToRemove) => {
-    const updatedEvents = events.filter(event => event.id !== idToRemove);
+    const updatedEvents = EventsList.filter(event => event.id !== idToRemove);
     setEvents(updatedEvents);
 
-    if (selectedDay) {
-      const updatedSelected = updatedEvents.filter(e => e.date === selectedDay.format("YYYY-MM-DD"));
-      setSelectedDayEvents(updatedSelected);
+    if (SDay) {
+      const updatedSelected = updatedEvents.filter(e => e.date === SDay.format("YYYY-MM-DD"));
+      setSDayEvents(updatedSelected);
     }
   };
 
@@ -132,18 +132,18 @@ const Calendar = () => {
     </div>
 
     <div className="max-w-6xl mx-auto p-2 bor-color scrollbar-hidden backimg dateBox">
-      {conflictMessage && (
+      {PopUpMessage && (
         <div className="fixed top-5 right-5 z-50 bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded shadow-lg animate-slide-in">
-          {conflictMessage}
+          {PopUpMessage}
         </div>
       )}
 
       <div className="eventspage">
         <div className={` eventfont scrollbar-hidden ${checked ? "moved" : ""}`}>
           <h1 className="text-4xl font-bold text-red-400 mt-10 AddEventbtn">Events</h1>
-          {events.filter(event => {
+          {EventsList.filter(event => {
             const eventDate = dayjs(event.date);
-            return eventDate.month() === currentDate.month() && eventDate.year() === currentDate.year();
+            return eventDate.month() === CDate.month() && eventDate.year() === CDate.year();
           })
             .map(event => (
               <div key={event.id} className={`p-4 rounded text-red-200 mb-2 eventsBorder`}>
@@ -156,11 +156,11 @@ const Calendar = () => {
         </div>
       </div>
       <div className="flex items-center mb-6 mt-10">
-        <h2 className="text-4xl font-bold dateHead">{currentDate.format("MMMM YYYY")}</h2>
-        <button onClick={handlePrev} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">←</button>
-        <button onClick={handleNext} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">→</button>
+        <h2 className="text-4xl font-bold dateHead">{CDate.format("MMMM YYYY")}</h2>
+        <button onClick={PrevMonthBtn} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">←</button>
+        <button onClick={NextMonthBtn} className="px-4 py-1 bg-red-300 text-2xl rounded adjust">→</button>
         <label className="toggellabel">
-        <input type="checkbox" checked={checked} onChange={handleCheckboxChange} className={`mr-2 togglebtn `}/>< i class={`bx  bx-menu-select `} style={{color:checked ? "#ffffff" : undefined}} ></i></label>
+        <input type="checkbox" checked={checked} onChange={CheckboxChange} className={`mr-2 togglebtn `}/>< i class={`bx  bx-menu-select `} style={{color:checked ? "#ffffff" : undefined}} ></i></label>
       </div>
 
 
@@ -171,9 +171,9 @@ const Calendar = () => {
       </div>
 
       <div className="grid grid-cols-7 gap-2 mt-3 gridouter scrollbar-hidden">
-        {generateCalendarDays().map(day => {
+        {DaysList().map(day => {
           const isToday = day.isSame(dayjs(), "day");
-          const dayEvents = events.filter(e => dayjs(e.date).isSame(day, "day"));
+          const dayEvents = EventsList.filter(e => dayjs(e.date).isSame(day, "day"));
 
           return (
             <div title="Click to See More"
@@ -184,7 +184,7 @@ const Calendar = () => {
               <div className="text-2xl font-bold datefont">{day.date()}</div>
               <div className="mt-1 space-y-1">
                 {dayEvents.map(event => (
-                  <EventCard key={event.id} event={event} />
+                  <Events key={event.id} event={event} />
                 ))}
               </div>
             </div>
@@ -195,10 +195,10 @@ const Calendar = () => {
       {showPopUp && (
         <div className="fixed inset-0 popupEvents flex items-center justify-center z-50 PopUpBox">
           <div className="bg-white p-6 rounded max-w-md w-full relative  popupDetails">
-            <h2 className="text-xl font-bold mb-4 text-center">{selectedDayLabel}</h2>
-            {selectedDayEvents.length > 0 ? (
+            <h2 className="text-xl font-bold mb-4 text-center">{SDayLabel}</h2>
+            {SDayEvents.length > 0 ? (
               <div className="space-y-2 overflow-y-auto scrollbar-hidden PopupEventDetails">
-                {selectedDayEvents.map(event => (
+                {SDayEvents.map(event => (
                   <div key={event.id} className={`p-2 rounded ${event.color}`}>
                     <h3 className="font-semibold">{event.title}</h3>
                     <p>Start: {event.start}</p>
@@ -218,33 +218,18 @@ const Calendar = () => {
             )}
             <button className="text-white cursor-pointer bg-green-700 rounded pl-2 pr-2 pt-1 pb-1 mt-5 AddEventbtn" onClick={addEvents}>Add Events</button>
             {showForm && (
-              <form onSubmit={handleFormSubmit} className="p-4 bg-gray-100 rounded shadow-md max-w-md popup formBox scrollbar-hidden">
-                <input type="text" name="title" placeholder="Event Title" value={newEvent.title} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
-                <input type="date" name="date" value={newEvent.date} onChange={handleInputChange} className="block w-1/2 mr-2 p-2 mb-2 border rounded float-left" required />
-                <input type="time" name="start" value={newEvent.start} onChange={handleInputChange} className="block w-47/100 p-2 mb-2 border rounded" required />
-                <input type="text" name="duration" placeholder="Duration (HH:MM)" value={newEvent.duration} onChange={handleInputChange} className="block w-full p-2 mb-2 border rounded" required />
+              <form onSubmit={FormSubmit} className="p-4 bg-gray-100 rounded shadow-md max-w-md popup formBox scrollbar-hidden">
+                <input type="text" name="title" placeholder="Event Title" value={newEventList.title} onChange={InputBox} className="block w-full p-2 mb-2 border rounded" required />
+                <input type="date" name="date" value={newEventList.date} onChange={InputBox} className="block w-1/2 mr-2 p-2 mb-2 border rounded float-left" required />
+                <input type="time" name="start" value={newEventList.start} onChange={InputBox} className="block w-47/100 p-2 mb-2 border rounded" required />
+                <input type="text" name="duration" placeholder="Duration (HH:MM)" value={newEventList.duration} onChange={InputBox} className="block w-full p-2 mb-2 border rounded" required />
                 <label className="labelcolor">Choose the Color</label><br></br>
 
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {[
-                    "bg-yellow-200",
-                    "bg-green-400",
-                    "bg-red-400 text-gray-100",
-                    "bg-purple-300",
-                    "bg-blue-400",
-                    "bg-gray-400",
-                    "bg-orange-300",
-                    "bg-blue-200",
+                  {["bg-yellow-200","bg-green-400","bg-red-400 text-gray-100","bg-purple-300","bg-blue-400","bg-gray-400","bg-orange-300","bg-blue-200",
                   ].map((color, index) => (
                     <label key={index} className="inline-flex items-center cursor-pointer">
-                      <input
-                        type="radio"
-                        name="color"
-                        value={color}
-                        checked={newEvent.color === color}
-                        onChange={handleInputChange}
-                        className="hidden peer"
-                      />
+                      <input type="radio" name="color" value={color} checked={newEventList.color === color} onChange={InputBox} className="hidden peer"/>
                       <span
                         className={`px-4 py-4 rounded-full colorbtn ${color} peer-checked:border peer-checked:border-black`}
                       ></span>
